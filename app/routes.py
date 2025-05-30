@@ -3,8 +3,7 @@ import openai
 from flask_mail import Message
 from reportlab.pdfgen import canvas
 from io import BytesIO
-from flask import current_app
-from app import mail  # certifique-se de que o objeto 'mail' esteja importado do app/__init__.py
+from app.extensions import mail  # ← Importa corretamente sem causar importação circular
 
 main = Blueprint("main", __name__)
 
@@ -25,7 +24,7 @@ def gerar_relatorio_resumido(dados):
     """
     
     response = openai.ChatCompletion.create(
-        model="gpt-4o",  # ou "gpt-4o-mini", conforme plano
+        model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
         max_tokens=600,
         temperature=0.7,
@@ -61,7 +60,7 @@ def gerar_mapa():
 
     print("Email recebido:", dados["email"])
 
-    # 1. Gerar relatório
+    # 1. Gerar relatório com GPT
     texto = gerar_relatorio_resumido(dados)
 
     # 2. Criar PDF
@@ -76,5 +75,5 @@ def gerar_mapa():
     msg.attach("Mapa_Astral_Resumido.pdf", "application/pdf", pdf.read())
     mail.send(msg)
 
-    # 4. Mostrar página de confirmação
+    # 4. Página de confirmação
     return render_template("confirmacao.html", email=dados["email"], nome=dados["nome"], objetivo=dados["objetivo"])
