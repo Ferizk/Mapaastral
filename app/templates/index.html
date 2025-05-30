@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mapa Astral Psicológico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #f3e5f5, #e1bee7);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background-color: #6a1b9a;
+      color: #fff;
+      padding: 1.2rem 0;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: #f8bbd0;
+    }
+
+    .hero h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .cta-button {
+      background-color: #6a1b9a;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s;
+    }
+
+    .cta-button:hover {
+      background-color: #4a148c;
+    }
+
+    .section {
+      padding: 3rem 1.5rem;
+      background-color: #fff;
+      margin: 2rem auto;
+      max-width: 800px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h3 {
+      color: #6a1b9a;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .section ol,
+    .section ul {
+      margin-left: 1.5rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    form label {
+      font-weight: bold;
+      color: #6a1b9a;
+    }
+
+    form input {
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    footer {
+      background-color: #4a148c;
+      color: #fff;
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 3rem;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: underline;
+      margin: 0 0.5rem;
+    }
+
+    footer small {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Mapa Astral Psicológico</h1>
+  <nav>
+    <a href="#como-funciona">Como Funciona</a>
+    <a href="#planos">Planos</a>
+    <a href="#contato">Contato</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" aria-label="Seção hero">
+  <h2>Seu mapa astral com foco psicológico e emocional</h2>
+  <button class="cta-button" onclick="document.getElementById('formulario').scrollIntoView({behavior:'smooth'});">Iniciar Meu Mapa</button>
+</section>
+
+<section id="como-funciona" class="section" aria-labelledby="como-funciona-title">
+  <h3 id="como-funciona-title">Como Funciona</h3>
+  <ol>
+    <li>Preencha seus dados</li>
+    <li>A IA gera seu mapa e análise</li>
+    <li>Você recebe o PDF personalizado</li>
+  </ol>
+</section>
+
+<section id="exemplos" class="section" aria-labelledby="exemplos-title">
+  <h3 id="exemplos-title">Exemplos de Relatório</h3>
+  <p>Veja abaixo um exemplo de como pode ser seu relatório:</p>
+  <p><strong>Relatório Exemplo:</strong> Sol em Gêmeos na casa 10, Lua em Câncer na casa 12. Interpretação: Você é uma pessoa comunicativa e sensível, com forte intuição e habilidades sociais.</p>
+</section>
+
+<section id="planos" class="section" aria-labelledby="planos-title">
+  <h3 id="planos-title">Planos</h3>
+  <ul>
+    <li><strong>Gratuito:</strong> Mini-relatório</li>
+    <li><strong>Pago:</strong> Mapa completo com PDF, interpretação psicológica, sugestões práticas</li>
+  </ul>
+</section>
+
+<section id="formulario" class="section" aria-labelledby="formulario-title">
+  <h3 id="formulario-title">Preencha seus dados</h3>
+  <form id="astroForm" action="{{ url_for('gerar_mapa') }}" method="POST" novalidate>
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required />
+
+    <label for="data">Data de Nascimento:</label>
+    <input type="date" id="data" name="data" required />
+
+    <label for="hora">Hora de Nascimento:</label>
+    <input type="time" id="hora" name="hora" required />
+
+    <label for="cidade">Cidade:</label>
+    <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo, Brasil" required />
+
+    <label for="objetivo">Objetivo (ex: amor, carreira):</label>
+    <input type="text" id="objetivo" name="objetivo" placeholder="Seu objetivo com o mapa" required />
+
+    <button type="submit" class="cta-button" style="margin-top: 1.4rem;">Gerar Mapa Psicológico</button>
+  </form>
+</section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="#sobre">Sobre</a> |
+    <a href="#termos">Termos</a> |
+    <a href="#politica">Política de Privacidade</a> |
+    <a href="#contato">Contato</a>
+  </p>
+  <small>
+    Este conteúdo é de natureza esotérica e não deve ser considerado científico. 
+    Protegemos os dados sensíveis dos usuários conforme a LGPD. 
+    O uso deste serviço é de responsabilidade do usuário.
+  </small>
+</footer>
+
+</body>
+</html>
+ 
