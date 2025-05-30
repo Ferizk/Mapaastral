@@ -14,5 +14,7 @@ def gerar_mapa():
     cidade = request.form.get("cidade")
     email = request.form.get('email')
     print("Email recebido:", email)  # Só para testar
-    
-    return f"<h2>Olá, {nome}!</h2><p>Você nasceu em {cidade} no dia {nascimento} às {hora}.</p>"
+
+    # Aqui você deve chamar sua função que gera o mapa e envia o email (não incluída aqui)
+
+    return render_template("confirmacao.html", email=email)

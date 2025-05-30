@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa Astral Psicológico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #fdf6f9, #fff);
+            color: #333;
+            padding: 2rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 181, 215, 0.3);
+        }
+        h1 {
+            color: #c83786;
+            margin-bottom: 1rem;
+        }
+        h2 {
+            color: #8e2a5e;
+            margin-top: 2rem;
+        }
+        ul {
+            text-align: left;
+            margin-top: 1rem;
+        }
+        li {
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
+        }
+        .cta-button {
+            background-color: #c83786;
+            color: #fff;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: background 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #a5286d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Seu Relatório Gratuito Foi Enviado!</h1>
+        <p>Verifique sua caixa de entrada ou a pasta de spam no seu e-mail. Seu mapa astral psicológico gratuito já está a caminho! ✨</p>
+
+        <h2>Deseja ir além? Descubra o que está incluso no Mapa Astral Psicológico Completo:</h2>
+
+        <ul>
+            <li><strong>Propósito de Vida:</strong> análise profunda do seu Nodo Norte, missão de alma e lições principais desta encarnação.</li>
+            <li><strong>Forças Psicológicas:</strong> padrões inconscientes, talentos naturais e traços de personalidade dominantes.</li>
+            <li><strong>Desafios Emocionais:</strong> feridas do passado (como a posição de Quíron) e caminhos para a cura.</li>
+            <li><strong>Relacionamentos:</strong> seu perfil afetivo, padrões de apego e compatibilidade emocional.</li>
+            <li><strong>Carreira e Vocação:</strong> indicações astrais de áreas em que você tende a prosperar e se realizar profissionalmente.</li>
+            <li><strong>Sombras e Autossabotagem:</strong> aspectos desafiadores e como lidar com suas armadilhas internas.</li>
+            <li><strong>Estilo de Pensamento e Comunicação:</strong> como sua mente funciona e como se expressa (análise de Mercúrio e aspectos).</li>
+            <li><strong>Comportamento Social:</strong> suas atitudes em grupo, projeções sociais e sua imagem pública.</li>
+            <li><strong>Trânsitos Atuais:</strong> o que os planetas estão ativando agora na sua vida e o que esperar nos próximos meses.</li>
+        </ul>
+
+        <p><strong>Receba um documento completo, personalizado, com mais de 30 páginas, entregue em PDF no seu e-mail.</strong></p>
+
+        <button class="cta-button" onclick="window.location.href='/comprar'">Quero meu Relatório Completo</button>
+    </div>
+</body>
+</html>
+ 
