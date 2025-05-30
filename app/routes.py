@@ -1,19 +1,18 @@
 from flask import Blueprint, render_template, request
 
-main = Blueprint('main', __name__)
+main = Blueprint("main", __name__)
 
-@main.route("/", methods=["GET"])
+@main.route("/")
 def home():
     return render_template("index.html")
 
 @main.route("/gerar_mapa", methods=["POST"])
 def gerar_mapa():
     nome = request.form.get("nome")
-    data = request.form.get("data")
+    nascimento = request.form.get("nascimento")
     hora = request.form.get("hora")
     cidade = request.form.get("cidade")
-    objetivo = request.form.get("objetivo")
+    email = request.form.get('email')
+    print("Email recebido:", email)  # Só para testar
     
-    # Aqui você vai processar e gerar o PDF depois
-    return f"Mapa astral gerado para {nome}, objetivo: {objetivo}"
- 
+    return f"<h2>Olá, {nome}!</h2><p>Você nasceu em {cidade} no dia {nascimento} às {hora}.</p>"

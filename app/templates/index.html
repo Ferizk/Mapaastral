@@ -173,7 +173,7 @@
 
 <section id="formulario" class="section" aria-labelledby="formulario-title">
   <h3 id="formulario-title">Preencha seus dados</h3>
-  <form id="astroForm" action="{{ url_for('gerar_mapa') }}" method="POST" novalidate>
+  <form id="astroForm" action="{{ url_for('main.gerar_mapa') }}" method="POST" novalidate>
     <label for="nome">Nome:</label>
     <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required />
 
@@ -189,7 +189,10 @@
     <label for="objetivo">Objetivo (ex: amor, carreira):</label>
     <input type="text" id="objetivo" name="objetivo" placeholder="Seu objetivo com o mapa" required />
 
-    <button type="submit" class="cta-button" style="margin-top: 1.4rem;">Gerar Mapa Psicológico</button>
+    <button type="submit" class="cta-button" style="margin-top: 1.4rem;" onclick="abrirModal(event)"> Gerar Mapa Psicológico</button>
+
+
+
   </form>
 </section>
 
@@ -208,6 +211,45 @@
     O uso deste serviço é de responsabilidade do usuário.
   </small>
 </footer>
+
+<!-- Modal para E-mail -->
+<div id="emailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:9999;">
+  <div style="background:#fff; width:300px; margin:100px auto; padding:20px; border-radius:8px; position:relative;">
+    <h3>Informe seu e-mail</h3>
+    <input type="email" id="emailInput" name="email" placeholder="Seu e-mail" required style="width:100%; padding:10px; margin:10px 0;" />
+    <button onclick="enviarFormulario()" style="padding:10px 15px;">Enviar</button>
+    <button onclick="fecharModal()" style="padding:10px 15px; float:right;">Cancelar</button>
+  </div>
+</div>
+
+<script>
+  function abrirModal(event) {
+    event.preventDefault(); // Evita envio do form imediatamente
+    document.getElementById("emailModal").style.display = "block";
+  }
+
+  function fecharModal() {
+    document.getElementById("emailModal").style.display = "none";
+  }
+
+  function enviarFormulario() {
+    const email = document.getElementById("emailInput").value;
+    if (!email) {
+      alert("Por favor, insira seu e-mail.");
+      return;
+    }
+
+    // Cria um input escondido com o e-mail no formulário original
+    const form = document.getElementById("astroForm");
+    const hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "email";
+    hiddenInput.value = email;
+    form.appendChild(hiddenInput);
+
+    form.submit();
+  }
+</script>
 
 </body>
 </html>
