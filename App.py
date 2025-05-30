@@ -9,7 +9,7 @@ from reportlab.pdfgen import canvas
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = os.getenv("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")
 
 app = Flask(__name__)
 
