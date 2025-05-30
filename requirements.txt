@@ -3,3 +3,7 @@ gunicorn
 pyswisseph
 email-validator
 python-dotenv
+openai
+flask-mail
+reportlab
+python-dotenv
