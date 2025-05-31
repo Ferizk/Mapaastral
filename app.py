@@ -8,6 +8,9 @@ from wtforms import StringField, DateField, TimeField, TextAreaField
 from wtforms.validators import DataRequired, Email, Regexp, ValidationError
 from dotenv import load_dotenv
 import openai
+from openai
+from openai import OpenAI
+from openai.error import OpenAIError, AuthenticationError, APIError, RateLimitError
 from flatlib.chart import Chart
 from flatlib.datetime import Datetime
 from flatlib.geopos import GeoPos
@@ -90,6 +93,7 @@ Seja conciso e direto ao ponto para este resumo gratuito.
 """
     try:
         logger.info("Enviando requisição para OpenAI...")
+<<<<<<< HEAD
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", # Usar um modelo mais rápido e barato para o resumo
             messages=[{"role": "user", "content": prompt}]
@@ -98,6 +102,16 @@ Seja conciso e direto ao ponto para este resumo gratuito.
         logger.info("Análise recebida da OpenAI.")
         return analise
     except Exception as e:
+=======
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",  # modelo mais rápido e barato para o resumo
+            messages=[{"role": "user", "content": prompt}]
+        )
+        analise = response.choices[0].message.content.strip()
+        logger.info("Análise recebida da OpenAI.")
+        return analise
+    except openai_error.OpenAIError as e:
+>>>>>>> 3425650 (Primeiro commit - adicionando todos os arquivos)
         logger.error(f"Erro ao chamar a API da OpenAI: {e}")
         raise ConnectionError("Não foi possível gerar a análise no momento. Tente novamente mais tarde.")
 

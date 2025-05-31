@@ -2,60 +2,111 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Mapa Astral Psicológico</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Confirmação - Mapa Astral Psicológico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(to right, #fdf6f9, #fff);
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #f3e5f5, #e1bee7);
             color: #333;
             padding: 2rem;
             text-align: center;
+            line-height: 1.6;
         }
         .container {
             max-width: 800px;
-            margin: auto;
+            margin: 2rem auto;
             padding: 2rem;
             background: #fff;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 181, 215, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 6px 20px rgba(106, 27, 154, 0.15);
         }
         h1 {
-            color: #c83786;
+            color: #6a1b9a; /* Roxo principal */
             margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        p {
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+        .highlight {
+            color: #8e44ad; /* Roxo secundário */
+            font-weight: 600;
         }
         h2 {
-            color: #8e2a5e;
-            margin-top: 2rem;
+            color: #6a1b9a;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            border-top: 1px solid #eee;
+            padding-top: 2rem;
         }
         ul {
             text-align: left;
-            margin-top: 1rem;
+            margin: 1rem auto;
+            padding-left: 20px; /* Indentação da lista */
+            max-width: 600px; /* Limita largura da lista */
+            list-style-position: outside;
         }
         li {
             margin-bottom: 0.8rem;
-            line-height: 1.6;
+        }
+        strong {
+            color: #4a148c; /* Roxo mais escuro */
         }
         .cta-button {
-            background-color: #c83786;
+            background-color: #6a1b9a;
             color: #fff;
-            padding: 1rem 2rem;
+            padding: 0.8rem 1.8rem;
             font-size: 1.1rem;
             border: none;
-            border-radius: 10px;
+            border-radius: 8px;
             cursor: pointer;
             margin-top: 2rem;
             transition: background 0.3s ease;
+            text-decoration: none; /* Para caso use como link */
+            display: inline-block;
         }
         .cta-button:hover {
-            background-color: #a5286d;
+            background-color: #4a148c;
+        }
+        /* Flash message styles (opcional, mas bom ter) */
+        .flash-messages {
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+        .flash-messages li {
+            padding: 0.75rem 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid transparent;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .flash-success {
+            color: #155724;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
         }
     </style>
 </head>
 <body>
     <div class="container">
+
+        <!-- Flash Messages (Exibe a mensagem de sucesso passada antes do redirect) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <ul class="flash-messages">
+            {% for category, message in messages %}
+              <li class="flash-{{ category }}">{{ message }}</li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+
         <h1>Seu Relatório Gratuito Foi Enviado!</h1>
-        <p>Verifique sua caixa de entrada ou a pasta de spam no seu e-mail. Seu mapa astral psicológico gratuito já está a caminho! ✨</p>
+        <p>Olá <span class="highlight">{{ nome or 'Usuário' }}</span>, seu mapa astral psicológico resumido, com foco em <span class="highlight">{{ objetivo or 'seu objetivo' }}</span>, foi enviado para <span class="highlight">{{ email or 'seu e-mail' }}</span>.</p>
+        <p>Verifique sua caixa de entrada ou a pasta de spam. ✨</p>
 
         <h2>Deseja ir além? Descubra o que está incluso no Mapa Astral Psicológico Completo:</h2>
 
@@ -73,8 +124,11 @@
 
         <p><strong>Receba um documento completo, personalizado, com mais de 30 páginas, entregue em PDF no seu e-mail.</strong></p>
 
-        <button class="cta-button" onclick="window.location.href='/comprar'">Quero meu Relatório Completo</button>
+        <!-- Link/Botão para o plano pago (ajustar href quando a rota existir) -->
+        <a href="#" class="cta-button">Quero meu Relatório Completo (Em Breve!)</a>
+
+        <p style="margin-top: 2rem;"><a href="{{ url_for('main.home') }}" style="color: #6a1b9a; text-decoration: underline;">Voltar para a página inicial</a></p>
     </div>
 </body>
 </html>
- 
+

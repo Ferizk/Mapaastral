@@ -17,6 +17,7 @@
       background: linear-gradient(to right, #f3e5f5, #e1bee7);
       color: #333;
       line-height: 1.6;
+      padding-bottom: 4rem; /* Add padding to prevent footer overlap */
     }
 
     header {
@@ -62,6 +63,8 @@
       cursor: pointer;
       border-radius: 6px;
       transition: background-color 0.3s;
+      display: inline-block; /* Ensure button respects margins */
+      margin-top: 1rem;
     }
 
     .cta-button:hover {
@@ -87,6 +90,7 @@
     .section ol,
     .section ul {
       margin-left: 1.5rem;
+      margin-bottom: 1rem; /* Add space below lists */
     }
 
     form {
@@ -99,6 +103,8 @@
     form label {
       font-weight: bold;
       color: #6a1b9a;
+      display: block; /* Ensure label takes full width */
+      margin-bottom: 0.3rem;
     }
 
     form input {
@@ -106,6 +112,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
       font-size: 1rem;
+      width: 100%; /* Make inputs take full width */
     }
 
     footer {
@@ -128,6 +135,35 @@
       margin-top: 1rem;
       font-size: 0.75rem;
     }
+
+    /* Flash message styles */
+    .flash-messages {
+        list-style: none;
+        padding: 0;
+        margin: 1rem 0;
+    }
+    .flash-messages li {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.375rem; /* rounded-md */
+    }
+    .flash-error {
+        color: #721c24;
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+    }
+    .flash-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+    }
+    .flash-info {
+        color: #0c5460;
+        background-color: #d1ecf1;
+        border-color: #bee5eb;
+    }
+
   </style>
 </head>
 <body>
@@ -151,49 +187,79 @@
 <section id="como-funciona" class="section" aria-labelledby="como-funciona-title">
   <h3 id="como-funciona-title">Como Funciona</h3>
   <ol>
-    <li>Preencha seus dados</li>
-    <li>A IA gera seu mapa e análise</li>
-    <li>Você recebe o PDF personalizado</li>
+    <li>Preencha seus dados de nascimento e objetivo.</li>
+    <li>Nossa IA gera uma análise psicológica resumida do seu mapa.</li>
+    <li>Você recebe o PDF personalizado diretamente no seu e-mail.</li>
   </ol>
 </section>
 
 <section id="exemplos" class="section" aria-labelledby="exemplos-title">
-  <h3 id="exemplos-title">Exemplos de Relatório</h3>
+  <h3 id="exemplos-title">Exemplo de Relatório Gratuito</h3>
   <p>Veja abaixo um exemplo de como pode ser seu relatório:</p>
-  <p><strong>Relatório Exemplo:</strong> Sol em Gêmeos na casa 10, Lua em Câncer na casa 12. Interpretação: Você é uma pessoa comunicativa e sensível, com forte intuição e habilidades sociais.</p>
+  <div style="background-color: #f3e5f5; padding: 1rem; border-radius: 5px; margin-top: 0.5rem; text-align: left;">
+      <p><strong>Exemplo:</strong> Sol em Gêmeos na casa 10, Lua em Câncer na casa 12.</p>
+      <p><strong>Interpretação Resumida:</strong> Você tende a ser uma pessoa comunicativa e adaptável em sua carreira ou imagem pública (Sol em Gêmeos na 10), mas possui um mundo emocional rico e sensível que pode ser mais introspectivo (Lua em Câncer na 12). Sua intuição é forte, mas pode precisar de momentos de solitude para se conectar com seus sentimentos.</p>
+  </div>
 </section>
 
 <section id="planos" class="section" aria-labelledby="planos-title">
   <h3 id="planos-title">Planos</h3>
   <ul>
-    <li><strong>Gratuito:</strong> Mini-relatório</li>
-    <li><strong>Pago:</strong> Mapa completo com PDF, interpretação psicológica, sugestões práticas</li>
+    <li><strong>Gratuito:</strong> Mini-relatório focado no seu objetivo, enviado por e-mail.</li>
+    <li><strong>Completo (Pago):</strong> Análise aprofundada de todos os planetas e casas, interpretação psicológica detalhada, sugestões práticas e PDF completo. <span style="color: #6a1b9a; font-weight: bold;">(Em breve!)</span></li>
   </ul>
 </section>
 
 <section id="formulario" class="section" aria-labelledby="formulario-title">
   <h3 id="formulario-title">Preencha seus dados</h3>
+
+  <!-- Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flash-messages">
+      {% for category, message in messages %}
+        <li class="flash-{{ category }}">{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
   <form id="astroForm" action="{{ url_for('main.gerar_mapa') }}" method="POST" novalidate>
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required />
+    <div>
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required value="{{ form_data.nome if form_data }}"/>
+    </div>
+    <div>
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required value="{{ form_data.email if form_data }}"/>
+    </div>
+    <div>
+        <label for="data">Data de Nascimento:</label>
+        <input type="date" id="data" name="data" required value="{{ form_data.nascimento if form_data }}"/> <!-- Nome do campo é 'data' -->
+    </div>
+    <div>
+        <label for="hora">Hora de Nascimento:</label>
+        <input type="time" id="hora" name="hora" required value="{{ form_data.hora if form_data }}"/>
+    </div>
+    <div>
+        <label for="cidade">Cidade:</label>
+        <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo, Brasil" required value="{{ form_data.cidade if form_data }}"/>
+    </div>
+    <div>
+        <label for="objetivo">Objetivo (ex: amor, carreira):</label>
+        <input type="text" id="objetivo" name="objetivo" placeholder="Seu objetivo com o mapa" required value="{{ form_data.objetivo if form_data }}"/>
+    </div>
 
-    <label for="data">Data de Nascimento:</label>
-    <input type="date" id="data" name="data" required />
-
-    <label for="hora">Hora de Nascimento:</label>
-    <input type="time" id="hora" name="hora" required />
-
-    <label for="cidade">Cidade:</label>
-    <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo, Brasil" required />
-
-    <label for="objetivo">Objetivo (ex: amor, carreira):</label>
-    <input type="text" id="objetivo" name="objetivo" placeholder="Seu objetivo com o mapa" required />
-
-    <button type="submit" class="cta-button" style="margin-top: 1.4rem;" onclick="abrirModal(event)"> Gerar Mapa Psicológico</button>
-
-
+    <button type="submit" class="cta-button" style="margin-top: 1.4rem;"> Gerar Mapa Psicológico</button>
 
   </form>
+  {% if analise %}
+    <div style="background-color: #e1bee7; margin-top:2rem; padding:1.2rem; border-radius:8px;">
+      <h4 style="color:#6a1b9a; margin-bottom:0.7rem;">Sua análise psicológica:</h4>
+      <p style="white-space: pre-line;">{{ analise }}</p>
+    </div>
+  {% endif %}
+
 </section>
 
 </main>
@@ -206,51 +272,14 @@
     <a href="#contato">Contato</a>
   </p>
   <small>
-    Este conteúdo é de natureza esotérica e não deve ser considerado científico. 
-    Protegemos os dados sensíveis dos usuários conforme a LGPD. 
+    Este conteúdo é de natureza esotérica e não deve ser considerado científico.
+    Protegemos os dados sensíveis dos usuários conforme a LGPD.
     O uso deste serviço é de responsabilidade do usuário.
   </small>
 </footer>
 
-<!-- Modal para E-mail -->
-<div id="emailModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:9999;">
-  <div style="background:#fff; width:300px; margin:100px auto; padding:20px; border-radius:8px; position:relative;">
-    <h3>Informe seu e-mail</h3>
-    <input type="email" id="emailInput" name="email" placeholder="Seu e-mail" required style="width:100%; padding:10px; margin:10px 0;" />
-    <button onclick="enviarFormulario()" style="padding:10px 15px;">Enviar</button>
-    <button onclick="fecharModal()" style="padding:10px 15px; float:right;">Cancelar</button>
-  </div>
-</div>
-
-<script>
-  function abrirModal(event) {
-    event.preventDefault(); // Evita envio do form imediatamente
-    document.getElementById("emailModal").style.display = "block";
-  }
-
-  function fecharModal() {
-    document.getElementById("emailModal").style.display = "none";
-  }
-
-  function enviarFormulario() {
-    const email = document.getElementById("emailInput").value;
-    if (!email) {
-      alert("Por favor, insira seu e-mail.");
-      return;
-    }
-
-    // Cria um input escondido com o e-mail no formulário original
-    const form = document.getElementById("astroForm");
-    const hiddenInput = document.createElement("input");
-    hiddenInput.type = "hidden";
-    hiddenInput.name = "email";
-    hiddenInput.value = email;
-    form.appendChild(hiddenInput);
-
-    form.submit();
-  }
-</script>
+<!-- Modal removido, e-mail agora está no formulário principal -->
 
 </body>
 </html>
- 
+
