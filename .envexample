@@ -2,18 +2,18 @@
 
 # Chave secreta para segurança do Flask (sessões, CSRF)
 # Gere uma chave forte, por exemplo, com: python -c 'import secrets; print(secrets.token_hex(16))'
-SECRET_KEY=9eac4a55b3f296b1035b67d90508f9c4
+SECRET_KEY=
 
-# Chave da API da OpenAI
-OPENAI_API_KEY=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
+# # Chave da API Gemini
+GOOGLE_API_KEY=coloque_sua_chave_aqui
 
 # Configurações de E-mail (Exemplo para Gmail)
 # Use uma senha de aplicativo se tiver 2FA ativado
 MAIL_SERVER=smtp.gmail.com
 MAIL_PORT=587
 MAIL_USE_TLS=true
-MAIL_USERNAME=mapaastralia@gmail.com
-MAIL_PASSWORD=cohb ziub hfxy dqrv
+MAIL_USERNAME=
+MAIL_PASSWORD=
 MAIL_DEFAULT_SENDER= # Opcional, se diferente de MAIL_USERNAME
 
 # URL do Banco de Dados (Exemplo SQLite)

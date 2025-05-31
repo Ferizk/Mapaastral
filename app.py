@@ -7,13 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, DateField, TimeField, TextAreaField
 from wtforms.validators import DataRequired, Email, Regexp, ValidationError
 from dotenv import load_dotenv
-import openai
-from openai
-from openai import OpenAI
-from openai.error import OpenAIError, AuthenticationError, APIError, RateLimitError
-from flatlib.chart import Chart
-from flatlib.datetime import Datetime
-from flatlib.geopos import GeoPos
+import google.generativeai as genai
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import simpleSplit
@@ -75,13 +69,15 @@ def get_lat_lon_from_city(city_name):
     return None, None # Retorna None se não conseguir
 
 def gerar_analise_openai(resumo_elementos, objetivo):
-    """Gera análise psicológica usando a API da OpenAI."""
-    openai_api_key = os.getenv("OPENAI_API_KEY")
-    if not openai_api_key:
-        logger.error("Chave da API OpenAI não configurada.")
+    """Gera análise psicológica usando a API do Gemini."""
+    gemini_api_key = os.getenv("GOOGLE_API_KEY")
+    if not gemini_api_key:
+        logger.error("Chave da API Gemini não configurada.")
         raise ValueError("Erro interno do servidor: configuração da API ausente.")
 
-    openai.api_key = openai_api_key
+    genai.configure(api_key=gemini_api_key)
+    model = genai.GenerativeModel('gemini-pro')
+
     prompt = f"""
 Gere uma análise psicológica resumida (máximo 3 parágrafos) com base nos seguintes posicionamentos astrais:
 {resumo_elementos}
@@ -92,27 +88,14 @@ Use uma linguagem terapêutica, acolhedora e voltada ao autoconhecimento, focand
 Seja conciso e direto ao ponto para este resumo gratuito.
 """
     try:
-        logger.info("Enviando requisição para OpenAI...")
-<<<<<<< HEAD
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", # Usar um modelo mais rápido e barato para o resumo
-            messages=[{"role": "user", "content": prompt}]
-        )
-        analise = response['choices'][0]['message']['content'].strip()
-        logger.info("Análise recebida da OpenAI.")
+        logger.info("Enviando requisição para Gemini...")
+        response = model.generate_content(prompt)
+        analise = response.text.strip()
+        logger.info("Análise recebida do Gemini.")
         return analise
+
     except Exception as e:
-=======
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",  # modelo mais rápido e barato para o resumo
-            messages=[{"role": "user", "content": prompt}]
-        )
-        analise = response.choices[0].message.content.strip()
-        logger.info("Análise recebida da OpenAI.")
-        return analise
-    except openai_error.OpenAIError as e:
->>>>>>> 3425650 (Primeiro commit - adicionando todos os arquivos)
-        logger.error(f"Erro ao chamar a API da OpenAI: {e}")
+        logger.error(f"Erro ao chamar a API do Gemini: {e}")
         raise ConnectionError("Não foi possível gerar a análise no momento. Tente novamente mais tarde.")
 
 def gerar_pdf_mapa(analise, nome_usuario):
@@ -142,7 +125,7 @@ def gerar_pdf_mapa(analise, nome_usuario):
                 c.setFont("Helvetica", 11)
                 text_object = c.beginText(margin, height - margin - 30)
                 text_object.setLeading(14)
-
+                
         c.drawText(text_object)
         c.save()
         buffer.seek(0)
@@ -199,8 +182,8 @@ def create_app(config_object='config.Config'): # Você precisará criar um confi
     # Verificar configurações essenciais
     if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
         logger.warning("Credenciais de E-mail (MAIL_USERNAME, MAIL_PASSWORD) não configuradas!")
-    if not os.getenv('OPENAI_API_KEY'):
-        logger.warning("Chave da API OpenAI (OPENAI_API_KEY) não configurada!")
+    if not os.getenv('GOOGLE_API_KEY'):
+        logger.warning("Chave da API Gemini (GOOGLE_API_KEY) não configurada!")
 
     # Inicializar extensões com o app
     db.init_app(app)
@@ -250,7 +233,7 @@ def create_app(config_object='config.Config'): # Você precisará criar um confi
                     resumo_elementos = '\n'.join(elementos)
                     logger.info("Mapa astral calculado.")
 
-                    # 4. Gerar Análise com OpenAI
+                    # 4. Gerar Análise com Gemini
                     analise = gerar_analise_openai(resumo_elementos, objetivo)
 
                     # 5. Gerar PDF
@@ -297,4 +280,3 @@ if __name__ == '__main__':
     # Roda em modo debug APENAS para desenvolvimento local
     # Para produção, use um servidor WSGI como Gunicorn ou Waitress
     app_instance.run(debug=True, host='0.0.0.0', port=5001) # Usar porta diferente para evitar conflito
-
